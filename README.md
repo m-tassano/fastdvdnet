@@ -2,6 +2,8 @@
 
 A state-of-the-art, simple and fast network for Deep Video Denoising which uses no motion compensation
 
+Previous deep video denoising algorithm: [DVDnet](https://github.com/m-tassano/dvdnet)
+
 ## Overview
 
 This source code provides a PyTorch implementation of FastDVDnet image denoising, as in 
