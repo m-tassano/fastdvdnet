@@ -11,8 +11,8 @@ Tassano, Matias and Delon, Julie and Veit, Thomas. "FastDVDnet: Towards Real-Tim
 
 ## Video examples
 
- Coming soon
- 
+You can download several denoised sequences with our algorithm and other methods [here](https://www.dropbox.com/sh/m9mpz1m1b55x420/AAAt1wes43brv37BmBxw07jna?dl=0 "FastDVDnet denoised sequences")
+
 ## User Guide
 
 The code as is runs in Python +3.6 with the following dependencies:
