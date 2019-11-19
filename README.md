@@ -1,4 +1,4 @@
-# [FastDVDnet](https://arxiv.org/abs/1907.01361)
+# FastDVDnet
 
 A state-of-the-art, simple and fast network for Deep Video Denoising which uses no motion compensation
 
@@ -6,8 +6,8 @@ Previous deep video denoising algorithm: [DVDnet](https://github.com/m-tassano/d
 
 ## Overview
 
-This source code provides a PyTorch implementation of FastDVDnet image denoising, as in 
-Tassano, Matias and Delon, Julie and Veit, Thomas. "FastDVDnet: Towards Real-Time Video Denoising Without Explicit Motion Estimation", arXiv preprint arXiv:1907.01361 (2019).
+This source code provides a PyTorch implementation of the FastDVDnet video denoising algorithm, as in 
+Tassano, Matias and Delon, Julie and Veit, Thomas. ["FastDVDnet: Towards Real-Time Video Denoising Without Explicit Motion Estimation", arXiv preprint arXiv:1907.01361 (2019).](https://arxiv.org/abs/1907.01361)
 
 ## Video Examples
 
@@ -75,7 +75,7 @@ are permitted in any medium without royalty provided the copyright
 notice and this notice are preserved. This file is offered as-is,
 without any warranty.
 
-* Author    : Matias Tassano `matias dot tassano at parisdescartes dot fr`
+* Author    : Matias Tassano `mtassano at gopro dot com`
 * Copyright : (C) 2019 Matias Tassano
 * Licence   : GPL v3+, see GPLv3.txt
 
