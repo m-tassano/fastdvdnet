@@ -18,10 +18,10 @@ class CvBlock(nn.Module):
 	def __init__(self, in_ch, out_ch):
 		super(CvBlock, self).__init__()
 		self.convblock = nn.Sequential(
-			nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1),
+			nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1, bias=False),
 			nn.BatchNorm2d(out_ch),
 			nn.ReLU(inplace=True),
-			nn.Conv2d(out_ch, out_ch, kernel_size=3, padding=1),
+			nn.Conv2d(out_ch, out_ch, kernel_size=3, padding=1, bias=False),
 			nn.BatchNorm2d(out_ch),
 			nn.ReLU(inplace=True)
 		)
@@ -36,10 +36,10 @@ class InputCvBlock(nn.Module):
 		self.interm_ch = 30
 		self.convblock = nn.Sequential(
 			nn.Conv2d(num_in_frames*(3+1), num_in_frames*self.interm_ch, \
-					  kernel_size=3, padding=1, groups=num_in_frames),
+					  kernel_size=3, padding=1, groups=num_in_frames, bias=False),
 			nn.BatchNorm2d(num_in_frames*self.interm_ch),
 			nn.ReLU(inplace=True),
-			nn.Conv2d(num_in_frames*self.interm_ch, out_ch, kernel_size=3, padding=1),
+			nn.Conv2d(num_in_frames*self.interm_ch, out_ch, kernel_size=3, padding=1, bias=False),
 			nn.BatchNorm2d(out_ch),
 			nn.ReLU(inplace=True)
 		)
@@ -52,7 +52,7 @@ class DownBlock(nn.Module):
 	def __init__(self, in_ch, out_ch):
 		super(DownBlock, self).__init__()
 		self.convblock = nn.Sequential(
-			nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1, stride=2),
+			nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1, stride=2, bias=False),
 			nn.BatchNorm2d(out_ch),
 			nn.ReLU(inplace=True),
 			CvBlock(out_ch, out_ch)
@@ -67,7 +67,7 @@ class UpBlock(nn.Module):
 		super(UpBlock, self).__init__()
 		self.convblock = nn.Sequential(
 			CvBlock(in_ch, in_ch),
-			nn.Conv2d(in_ch, out_ch*4, kernel_size=3, padding=1),
+			nn.Conv2d(in_ch, out_ch*4, kernel_size=3, padding=1, bias=False),
 			nn.PixelShuffle(2)
 		)
 
@@ -79,10 +79,10 @@ class OutputCvBlock(nn.Module):
 	def __init__(self, in_ch, out_ch):
 		super(OutputCvBlock, self).__init__()
 		self.convblock = nn.Sequential(
-			nn.Conv2d(in_ch, in_ch, kernel_size=3, padding=1),
+			nn.Conv2d(in_ch, in_ch, kernel_size=3, padding=1, bias=False),
 			nn.BatchNorm2d(in_ch),
 			nn.ReLU(inplace=True),
-			nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1)
+			nn.Conv2d(in_ch, out_ch, kernel_size=3, padding=1, bias=False)
 		)
 
 	def forward(self, x):
