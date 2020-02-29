@@ -1,6 +1,8 @@
 # FastDVDnet
 
-A state-of-the-art, simple and fast network for Deep Video Denoising which uses no motion compensation
+A state-of-the-art, simple and fast network for Deep Video Denoising which uses no motion compensation.
+
+NEW: Paper to be presented at CVPR2020
 
 Previous deep video denoising algorithm: [DVDnet](https://github.com/m-tassano/dvdnet)
 
