@@ -51,6 +51,7 @@ test_fastdvdnet.py \
 * run with *--no_gpu* to run on CPU instead of GPU
 * run with *--save_noisy* to save noisy frames
 * set *max_num_fr_per_seq* to set the max number of frames to load per sequence
+* to denoise _clipped AWGN_ run with *--model_file model_clipped_noise.pth"
 * run with *--help* to see details on all input parameters
 
 ### Training
