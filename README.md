@@ -32,6 +32,10 @@ The code as is runs in Python +3.6 with the following dependencies:
 * [OpenCV](https://pypi.org/project/opencv-python/)
 * [tensorboardX](https://github.com/lanpa/tensorboardX/)
 
+Note: the tested version of NVIDIA DALI is 0.10.0. To install it (supposing you have CUDA 10.0), you need to run
+```
+pip install --extra-index-url https://developer.download.nvidia.com/compute/redist/cuda/10.0 nvidia-dali==0.10.0 
+```
 ## Usage
 
 ### Testing
