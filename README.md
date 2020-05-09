@@ -9,7 +9,7 @@ Previous deep video denoising algorithm: [DVDnet](https://github.com/m-tassano/d
 ## Overview
 
 This source code provides a PyTorch implementation of the FastDVDnet video denoising algorithm, as in 
-Tassano, Matias and Delon, Julie and Veit, Thomas. ["FastDVDnet: Towards Real-Time Video Denoising Without Explicit Motion Estimation", arXiv preprint arXiv:1907.01361 (2019).](https://arxiv.org/abs/1907.01361)
+Tassano, Matias and Delon, Julie and Veit, Thomas. ["FastDVDnet: Towards Real-Time Deep Video Denoising Without Flow Estimation", arXiv preprint arXiv:1907.01361 (2019).](https://arxiv.org/abs/1907.01361)
 
 ## Video Examples
 
