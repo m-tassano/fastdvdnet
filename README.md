@@ -25,17 +25,24 @@ FastDVDnet is orders of magnitude faster than other state-of-the-art methods
 The code as is runs in Python +3.6 with the following dependencies:
 
 ### Dependencies
+
+You can create a conda environment with all the dependecies by running (Thanks to Antoine Monod for the .yml file)
+```
+conda env create -f requirements.yml -n <env_name>
+```
+
 * [PyTorch v1.0.0](http://pytorch.org/)
-* [NVIDIA DALI](https://github.com/NVIDIA/DALI)
+* 
 * [scikit-image](http://scikit-image.org/)
 * [numpy](https://www.numpy.org/)
 * [OpenCV](https://pypi.org/project/opencv-python/)
 * [tensorboardX](https://github.com/lanpa/tensorboardX/)
 
-Note: the tested version of NVIDIA DALI is 0.10.0. To install it (supposing you have CUDA 10.0), you need to run
+Note: this project needs the [NVIDIA DALI](https://github.com/NVIDIA/DALI) package to train. The tested version of DALI is 0.10.0. If you prefer to install it yourself (supposing you have CUDA 10.0), you need to run
 ```
 pip install --extra-index-url https://developer.download.nvidia.com/compute/redist/cuda/10.0 nvidia-dali==0.10.0 
 ```
+
 ## Usage
 
 ### Testing
