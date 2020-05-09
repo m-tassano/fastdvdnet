@@ -26,6 +26,7 @@ FastDVDnet is orders of magnitude faster than other state-of-the-art methods
 <img src="https://github.com/m-tassano/fastdvdnet/raw/master/img/9831-teaser.gif" width=256> <img src="https://github.com/m-tassano/fastdvdnet/raw/master/img/psnrs.png" width=600>
 
 Left: Input noise sigma 40 denoised with FastDVDnet (sorry about the dithering due to gif compression)
+
 Right: PSNRs on the DAVIS testset, Gaussian noise and clipped Gaussian noise
 
 ## Architecture
