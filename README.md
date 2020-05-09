@@ -13,15 +13,29 @@ Tassano, Matias and Delon, Julie and Veit, Thomas. ["FastDVDnet: Towards Real-Ti
 
 ## Video Examples
 
-You can download several denoised sequences with our algorithm and other methods [here](https://www.dropbox.com/sh/m9mpz1m1b55x420/AAAt1wes43brv37BmBxw07jna?dl=0 "FastDVDnet denoised sequences")
+You can download several denoised sequences with our algorithm and other methods [here](https://www.dropbox.com/sh/m9mpz1m1b55x420/AAAt1wes43brv37BmBxw07jna?dl=0 "FastDVDnet denoised sequences") (more videos coming soon)
 
 ## Running Times
 
 FastDVDnet is orders of magnitude faster than other state-of-the-art methods
 
-<img src="https://github.com/m-tassano/fastdvdnet/raw/master/runtimes.png" width=350>
+<img src="https://github.com/m-tassano/fastdvdnet/raw/master/img/runtimes_all_log.png" width=350>
 
-## User Guide
+## Results
+
+<img src="https://github.com/m-tassano/fastdvdnet/raw/master/img/9831-teaser.gif" width=512>
+Input noise sigma 40 denoised with FastDVDnet 
+(sorry about the dithering due to gif compression)
+
+
+<img src="https://github.com/m-tassano/fastdvdnet/raw/master/img/psnrs.png" heigth=250>
+PSNRs on the DAVIS testset. Left: Gaussian noise, right: clipped Gaussian noise
+
+## Architecture
+
+<img src="https://github.com/m-tassano/fastdvdnet/raw/master/img/arch.png" heigth=350>
+
+## Code User Guide
 
 The code as is runs in Python +3.6 with the following dependencies:
 
