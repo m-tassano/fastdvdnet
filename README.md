@@ -18,6 +18,7 @@ You can download several denoised sequences with our algorithm and other methods
 ## Running Times
 
 FastDVDnet is orders of magnitude faster than other state-of-the-art methods
+
 <img src="https://github.com/m-tassano/fastdvdnet/raw/master/runtimes.png" width=350>
 
 ## User Guide
@@ -31,14 +32,7 @@ You can create a conda environment with all the dependecies by running (Thanks t
 conda env create -f requirements.yml -n <env_name>
 ```
 
-* [PyTorch v1.0.0](http://pytorch.org/)
-* 
-* [scikit-image](http://scikit-image.org/)
-* [numpy](https://www.numpy.org/)
-* [OpenCV](https://pypi.org/project/opencv-python/)
-* [tensorboardX](https://github.com/lanpa/tensorboardX/)
-
-Note: this project needs the [NVIDIA DALI](https://github.com/NVIDIA/DALI) package to train. The tested version of DALI is 0.10.0. If you prefer to install it yourself (supposing you have CUDA 10.0), you need to run
+Note: this project needs the [NVIDIA DALI](https://github.com/NVIDIA/DALI) package for training. The tested version of DALI is 0.10.0. If you prefer to install it yourself (supposing you have CUDA 10.0), you need to run
 ```
 pip install --extra-index-url https://developer.download.nvidia.com/compute/redist/cuda/10.0 nvidia-dali==0.10.0 
 ```
