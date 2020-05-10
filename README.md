@@ -35,11 +35,9 @@ Right: PSNRs on the DAVIS testset, Gaussian noise and clipped Gaussian noise
 
 ## Code User Guide
 
-The code as is runs in Python +3.6 with the following dependencies:
-
 ### Dependencies
 
-You can create a conda environment with all the dependecies by running (Thanks to Antoine Monod for the .yml file)
+The code runs on Python +3.6. You can create a conda environment with all the dependecies by running (Thanks to Antoine Monod for the .yml file)
 ```
 conda env create -f requirements.yml -n <env_name>
 ```
@@ -48,8 +46,6 @@ Note: this project needs the [NVIDIA DALI](https://github.com/NVIDIA/DALI) packa
 ```
 pip install --extra-index-url https://developer.download.nvidia.com/compute/redist/cuda/10.0 nvidia-dali==0.10.0 
 ```
-
-## Usage
 
 ### Testing
 
