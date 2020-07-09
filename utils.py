@@ -126,7 +126,7 @@ def open_sequence(seq_dir, gray_mode, expand_if_needed=False, max_num_fr=100):
 												   expand_if_needed=expand_if_needed,\
 												   expand_axis0=False)
 		seq_list.append(img)
-		seq = np.stack(seq_list, axis=0)
+	seq = np.stack(seq_list, axis=0)
 	return seq, expanded_h, expanded_w
 
 def open_image(fpath, gray_mode, expand_if_needed=False, expand_axis0=True, normalize_data=True):
