@@ -15,10 +15,6 @@ Tassano, Matias and Delon, Julie and Veit, Thomas. ["FastDVDnet: Towards Real-Ti
 
 You can download several denoised sequences with our algorithm and other methods [here](https://www.dropbox.com/sh/m9mpz1m1b55x420/AAAt1wes43brv37BmBxw07jna?dl=0 "FastDVDnet denoised sequences") (more videos coming soon)
 
-## Colab example
-
-You can use this [Colab notebook](https://colab.research.google.com/drive/1dPxlXPYgxanU-pgY4KOGsrCwSNo4IwBn?usp=sharing) to replicate the results
-
 ## Running Times
 
 FastDVDnet is orders of magnitude faster than other state-of-the-art methods
@@ -38,6 +34,10 @@ Right: PSNRs on the DAVIS testset, Gaussian noise and clipped Gaussian noise
 <img src="https://github.com/m-tassano/fastdvdnet/raw/master/img/arch.png" heigth=350>
 
 ## Code User Guide
+
+## Colab example
+
+You can use this [Colab notebook](https://colab.research.google.com/drive/1dPxlXPYgxanU-pgY4KOGsrCwSNo4IwBn?usp=sharing) to replicate the results
 
 ### Dependencies
 
