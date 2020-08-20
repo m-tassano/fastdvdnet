@@ -35,7 +35,7 @@ Right: PSNRs on the DAVIS testset, Gaussian noise and clipped Gaussian noise
 
 ## Code User Guide
 
-## Colab example
+### Colab example
 
 You can use this [Colab notebook](https://colab.research.google.com/drive/1dPxlXPYgxanU-pgY4KOGsrCwSNo4IwBn?usp=sharing) to replicate the results
 
