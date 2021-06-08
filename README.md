@@ -56,15 +56,12 @@ You can use this [Colab notebook](https://colab.research.google.com/drive/1dPxlX
 
 ### Dependencies
 
-The code runs on Python +3.6. You can create a conda environment with all the dependecies by running (Thanks to Antoine Monod for the .yml file)
+The code runs on Python +3.6. You can create a conda environment with all the dependecies by running
 ```
 conda env create -f requirements.yml -n <env_name>
 ```
 
-Note: this project needs the [NVIDIA DALI](https://github.com/NVIDIA/DALI) package for training. The tested version of DALI is 0.10.0. If you prefer to install it yourself (supposing you have CUDA 10.0), you need to run
-```
-pip install --extra-index-url https://developer.download.nvidia.com/compute/redist/cuda/10.0 nvidia-dali==0.10.0 
-```
+NOTE: the code was updated to support a newer version of the DALI library. For the original version of the algorithm which supported pytorch=1.0.0 and nvidia-dali==0.10.0 you can see this [release](https://github.com/m-tassano/fastdvdnet/releases/tag/v0.1)
 
 ### Testing
 
