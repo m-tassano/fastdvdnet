@@ -1,3 +1,14 @@
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fastdvdnet-towards-real-time-video-denoising/video-denoising-on-davis-sigma10)](https://paperswithcode.com/sota/video-denoising-on-davis-sigma10?p=fastdvdnet-towards-real-time-video-denoising)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fastdvdnet-towards-real-time-video-denoising/video-denoising-on-davis-sigma20)](https://paperswithcode.com/sota/video-denoising-on-davis-sigma20?p=fastdvdnet-towards-real-time-video-denoising)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fastdvdnet-towards-real-time-video-denoising/video-denoising-on-set8-sigma10)](https://paperswithcode.com/sota/video-denoising-on-set8-sigma10?p=fastdvdnet-towards-real-time-video-denoising)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fastdvdnet-towards-real-time-video-denoising/video-denoising-on-davis-sigma30)](https://paperswithcode.com/sota/video-denoising-on-davis-sigma30?p=fastdvdnet-towards-real-time-video-denoising)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fastdvdnet-towards-real-time-video-denoising/video-denoising-on-davis-sigma40)](https://paperswithcode.com/sota/video-denoising-on-davis-sigma40?p=fastdvdnet-towards-real-time-video-denoising)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fastdvdnet-towards-real-time-video-denoising/video-denoising-on-davis-sigma50)](https://paperswithcode.com/sota/video-denoising-on-davis-sigma50?p=fastdvdnet-towards-real-time-video-denoising)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fastdvdnet-towards-real-time-video-denoising/video-denoising-on-set8-sigma20)](https://paperswithcode.com/sota/video-denoising-on-set8-sigma20?p=fastdvdnet-towards-real-time-video-denoising)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fastdvdnet-towards-real-time-video-denoising/video-denoising-on-set8-sigma30)](https://paperswithcode.com/sota/video-denoising-on-set8-sigma30?p=fastdvdnet-towards-real-time-video-denoising)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fastdvdnet-towards-real-time-video-denoising/video-denoising-on-set8-sigma40)](https://paperswithcode.com/sota/video-denoising-on-set8-sigma40?p=fastdvdnet-towards-real-time-video-denoising)
+[![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/fastdvdnet-towards-real-time-video-denoising/video-denoising-on-set8-sigma50)](https://paperswithcode.com/sota/video-denoising-on-set8-sigma50?p=fastdvdnet-towards-real-time-video-denoising)
+
 # FastDVDnet
 
 A state-of-the-art, simple and fast network for Deep Video Denoising which uses no motion compensation.
