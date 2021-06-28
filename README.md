@@ -24,13 +24,13 @@ Tassano, Matias and Delon, Julie and Veit, Thomas. ["FastDVDnet: Towards Real-Ti
 
 ## Datasets and Video Examples
 
-You can download several denoised sequences with our algorithm and other methods [here](https://www.dropbox.com/sh/m9mpz1m1b55x420/AAAt1wes43brv37BmBxw07jna?dl=0 "FastDVDnet denoised sequences")
+You can download several denoised sequences with our algorithm and other methods [here](https://www.dropbox.com/sh/20n4cscqkqsfgoj/AAB7XsIiSjp1mp7wosjifGtka?dl=0 "FastDVDnet denoised sequences")
 
 ### Trainset
 
 The 2017 DAVIS dataset was used for training.
 You can find a list with the names of the 480p sequences employed [here](https://gist.github.com/m-tassano/27c1ef00ca42a8e50c2cee8a4205e559).
-The dataloader needs the sequences in mp4 format. You can find the converted .mp4 files under the _training_ folder [here](https://www.dropbox.com/sh/m9mpz1m1b55x420/AAAt1wes43brv37BmBxw07jna?dl=0 "FastDVDnet denoised sequences").
+The dataloader needs the sequences in mp4 format. You can find the converted .mp4 files under the _training_ folder [here](https://www.dropbox.com/sh/20n4cscqkqsfgoj/AAB7XsIiSjp1mp7wosjifGtka?dl=0 "FastDVDnet denoised sequences").
 
 Note: when converting the sequences one has to pay particular attention to the 'crf' and 'keyint' ffmpeg parameters to avoid strong compression. For the code to convert the image sequences see this [gist](https://gist.github.com/m-tassano/0536391eb79d63864e5005ea4da88243)
 
@@ -38,7 +38,7 @@ Note: when converting the sequences one has to pay particular attention to the '
 
 Two testsets are used in the paper: _Set8_ and the _2017 DAVIS testset_.
 
-_Set8_ is composed of 8 sequences: 4 sequences from the _Derf 480p_ testset ("tractor", "touchdown", "park_joy", "sunflower") plus other 4 540p sequences. You can find these under the _test_sequences_ folder [here](https://www.dropbox.com/sh/m9mpz1m1b55x420/AAAt1wes43brv37BmBxw07jna?dl=0 "FastDVDnet denoised sequences").
+_Set8_ is composed of 8 sequences: 4 sequences from the _Derf 480p_ testset ("tractor", "touchdown", "park_joy", "sunflower") plus other 4 540p sequences. You can find these under the _test_sequences_ folder [here](https://www.dropbox.com/sh/20n4cscqkqsfgoj/AAB7XsIiSjp1mp7wosjifGtka?dl=0 "FastDVDnet denoised sequences").
 
 
 ## Running Times
