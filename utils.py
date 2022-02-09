@@ -332,7 +332,7 @@ def svd_orthogonalization(lyr):
 			mat_u, _, mat_v = torch.svd(weights)
 			weights = torch.mm(mat_u, mat_v.t())
 
-			lyr.weight.data = weights.view(f1, f2, c_in, c_out).permute(3, 2, 0, 1).type(dtype)
+			lyr.weight.data = weights.view(f1, f2, c_in, c_out).permute(3, 2, 0, 1).contiguous().type(dtype)
 		except:
 			pass
 	else:
