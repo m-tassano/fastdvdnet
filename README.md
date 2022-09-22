@@ -36,7 +36,7 @@ Note: when converting the sequences one has to pay particular attention to the '
 
 ### Testsets
 
-Two testsets are used in the paper: _Set8_ and the _2017 DAVIS testset_.
+Two testsets are used in the paper: _Set8_ and the [_2017 DAVIS testset_](https://data.vision.ee.ethz.ch/csergi/share/davis/DAVIS-2017-test-dev-480p.zip).
 
 _Set8_ is composed of 8 sequences: 4 sequences from the _Derf 480p_ testset ("tractor", "touchdown", "park_joy", "sunflower") plus other 4 540p sequences. You can find these under the _test_sequences_ folder [here](https://drive.google.com/drive/folders/11chLkbcX-oKGLOLONuDpXZM2-vujn_KD?usp=sharing "FastDVDnet denoised sequences").
 
