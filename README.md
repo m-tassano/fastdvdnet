@@ -96,6 +96,8 @@ test_fastdvdnet.py \
 
 ### Training
 
+DISCLAIMER: The weights shared in this repo were trained with a previous DALI version, v0.10.0, and pytorch v1.0.0. The training code was later updated to work with a more recent version of DALI. However, it has been reported that the perfomance obtained with this newer DALI version is not as good as the original one, see https://github.com/m-tassano/fastdvdnet/issues/51 for more details.
+
 If you want to train your own models you can execute
 
 ```
