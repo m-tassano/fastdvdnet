@@ -17,7 +17,7 @@ print("Frame count = ", frame_count)
 print("Video Duration = ", duration)
 print("Frame Rate = ", frame_rate)
 count = 0
-
+fr_cnt = 1
 while cap.isOpened():
     ret, frame = cap.read()
 
@@ -28,11 +28,12 @@ while cap.isOpened():
         continue
 
     # Save the frame as an image
-    cv2.imwrite(f'{save_path}/frame{count}.jpg', frame)
+    cv2.imwrite(f'{save_path}/{fr_cnt}.jpg', frame)
+    fr_cnt+=1
 
     count += 1
     print("Frame: ", count, "/", frame_count)
 
-print(count)
+print("Frames count : ",fr_cnt)
 cap.release()
 cv2.destroyAllWindows()
