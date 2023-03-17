@@ -19,7 +19,9 @@ from random import choices # requires Python >= 3.6
 import numpy as np
 import cv2
 import torch
-from skimage.measure.simple_metrics import compare_psnr
+# from skimage.measure.simple_metrics import compare_psnr
+from skimage.metrics import peak_signal_noise_ratio as compare_psnr
+# 
 from tensorboardX import SummaryWriter
 
 IMAGETYPES = ('*.bmp', '*.png', '*.jpg', '*.jpeg', '*.tif') # Supported image types
@@ -116,7 +118,7 @@ def open_sequence(seq_dir, gray_mode, expand_if_needed=False, max_num_fr=100):
 	"""
 	# Get ordered list of filenames
 	files = get_imagenames(seq_dir)
-
+	print("Sequence folder: ", seq_dir)
 	seq_list = []
 	print("\tOpen sequence in folder: ", seq_dir)
 	for fpath in files[0:max_num_fr]:
@@ -198,7 +200,7 @@ def batch_psnr(img, imclean, data_range):
 	"""
 	img_cpu = img.data.cpu().numpy().astype(np.float32)
 	imgclean = imclean.data.cpu().numpy().astype(np.float32)
-	psnr = 0
+	psnr = 0	
 	for i in range(img_cpu.shape[0]):
 		psnr += compare_psnr(imgclean[i, :, :, :], img_cpu[i, :, :, :], \
 					   data_range=data_range)

@@ -58,6 +58,9 @@ def test_fastdvdnet(**args):
 			"no_gpu": if True, run model on CPU
 			"save_path": where to save outputs as png
 			"gray": if True, perform denoising of grayscale images instead of RGB
+			"video":if True, path is a video
+			"batch_size":set the batch size depending on available gpu
+
 	"""
 	# Start time
 	start_time = time.time()
@@ -76,9 +79,9 @@ def test_fastdvdnet(**args):
 	# Create models
 	print('Loading models ...')
 	model_temp = FastDVDnet(num_input_frames=NUM_IN_FR_EXT)
-
+	print("Model created")
 	# Load saved weights
-	state_temp_dict = torch.load(args['model_file'], map_location=device)
+	state_temp_dict = torch.load(args['model_file'], map_location='cpu')
 	if args['cuda']:
 		device_ids = [0]
 		model_temp = nn.DataParallel(model_temp, device_ids=device_ids).cuda()
@@ -86,11 +89,12 @@ def test_fastdvdnet(**args):
 		# CPU mode: remove the DataParallel wrapper
 		state_temp_dict = remove_dataparallel_wrapper(state_temp_dict)
 	model_temp.load_state_dict(state_temp_dict)
-
+	print("Loaded weights")
 	# Sets the model in evaluation mode (e.g. it removes BN)
 	model_temp.eval()
 
 	with torch.no_grad():
+		print("Process data")
 		# process data
 		seq, _, _ = open_sequence(args['test_path'],\
 									args['gray'],\
@@ -98,17 +102,18 @@ def test_fastdvdnet(**args):
 									max_num_fr=args['max_num_fr_per_seq'])
 		seq = torch.from_numpy(seq).to(device)
 		seq_time = time.time()
-
+		print("Add noise")
 		# Add noise
 		noise = torch.empty_like(seq).normal_(mean=0, std=args['noise_sigma']).to(device)
 		seqn = seq + noise
 		noisestd = torch.FloatTensor([args['noise_sigma']]).to(device)
-
+		print("Denoising")
 		denframes = denoise_seq_fastdvdnet(seq=seqn,\
 										noise_std=noisestd,\
 										temp_psz=NUM_IN_FR_EXT,\
 										model_temporal=model_temp)
-
+	
+	print("Computing PSNR")
 	# Compute PSNR and log it
 	stop_time = time.time()
 	psnr = batch_psnr(denframes, seq, 1.)
@@ -136,12 +141,12 @@ if __name__ == "__main__":
 	parser.add_argument("--model_file", type=str,\
 						default="./model.pth", \
 						help='path to model of the pretrained denoiser')
-	parser.add_argument("--test_path", type=str, default="./data/rgb/Kodak24", \
+	parser.add_argument("--test_path", type=str, default="dataset/video1", \
 						help='path to sequence to denoise')
 	parser.add_argument("--suffix", type=str, default="", help='suffix to add to output name')
-	parser.add_argument("--max_num_fr_per_seq", type=int, default=25, \
+	parser.add_argument("--max_num_fr_per_seq", type=int, default=10000, \
 						help='max number of frames to load per sequence')
-	parser.add_argument("--noise_sigma", type=float, default=25, help='noise level used on test set')
+	parser.add_argument("--noise_sigma", type=float, default=30, help='noise level used on test set')
 	parser.add_argument("--dont_save_results", action='store_true', help="don't save output images")
 	parser.add_argument("--save_noisy", action='store_true', help="save noisy frames")
 	parser.add_argument("--no_gpu", action='store_true', help="run model on CPU")
@@ -149,6 +154,8 @@ if __name__ == "__main__":
 						 help='where to save outputs as png')
 	parser.add_argument("--gray", action='store_true',\
 						help='perform denoising of grayscale images instead of RGB')
+	parser.add_argument("--video", action='store_true', help="Path is not a video")
+	parser.add_argument("--batch_size", type=float, default=90, help="set the batch size depending on available gpu")
 
 	argspar = parser.parse_args()
 	# Normalize noises ot [0, 1]
