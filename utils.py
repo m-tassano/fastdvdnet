@@ -83,24 +83,6 @@ def init_logging(argdict):
 	logger = init_logger(argdict['log_dir'], argdict)
 	return writer, logger
 
-def get_imagenames(seq_dir, pattern=None):
-	""" Get ordered list of filenames
-	"""
-	files = []
-	for typ in IMAGETYPES:
-		files.extend(glob.glob(os.path.join(seq_dir, typ)))
-
-	# filter filenames
-	if not pattern is None:
-		ffiltered = []
-		ffiltered = [f for f in files if pattern in os.path.split(f)[-1]]
-		files = ffiltered
-		del ffiltered
-
-	# sort filenames alphabetically
-	files.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
-	return files
-
 def open_sequence(seq_dir, gray_mode, expand_if_needed=False, max_num_fr=100):
 	r""" Opens a sequence of images and expands it to even sizes if necesary
 	Args:
@@ -117,7 +99,21 @@ def open_sequence(seq_dir, gray_mode, expand_if_needed=False, max_num_fr=100):
 		expanded_w: True if original dim W was odd and image got expanded in this dimension.
 	"""
 	# Get ordered list of filenames
-	files = get_imagenames(seq_dir)
+	files = []
+	pattern = None
+	for typ in IMAGETYPES:
+		files.extend(glob.glob(os.path.join(seq_dir, typ)))
+
+	# filter filenames
+	if not pattern is None:
+		ffiltered = []
+		ffiltered = [f for f in files if pattern in os.path.split(f)[-1]]
+		files = ffiltered
+		del ffiltered
+
+	# sort filenames alphabetically
+	files.sort(key=lambda f: int(''.join(filter(str.isdigit, f))))
+	
 	print("Sequence folder: ", seq_dir)
 	seq_list = []
 	print("\tOpen sequence in folder: ", seq_dir)
@@ -131,7 +127,7 @@ def open_sequence(seq_dir, gray_mode, expand_if_needed=False, max_num_fr=100):
 	seq = np.stack(seq_list, axis=0)
 	return seq, expanded_h, expanded_w
 
-def open_image(fpath, gray_mode, expand_if_needed=False, expand_axis0=True, normalize_data=True):
+def open_image(frame, gray_mode, expand_if_needed=False, expand_axis0=True, normalize_data=True):
 	r""" Opens an image and expands it if necesary
 	Args:
 		fpath: string, path of image file
@@ -147,14 +143,7 @@ def open_image(fpath, gray_mode, expand_if_needed=False, expand_axis0=True, norm
 		expanded_h: True if original dim H was odd and image got expanded in this dimension.
 		expanded_w: True if original dim W was odd and image got expanded in this dimension.
 	"""
-	if not gray_mode:
-		# Open image as a CxHxW torch.Tensor
-		img = cv2.imread(fpath)
-		# from HxWxC to CxHxW, RGB image
-		img = (cv2.cvtColor(img, cv2.COLOR_BGR2RGB)).transpose(2, 0, 1)
-	else:
-		# from HxWxC to  CxHxW grayscale image (C=1)
-		img = cv2.imread(fpath, cv2.IMREAD_GRAYSCALE)
+	img = frame
 
 	if expand_axis0:
 		img = np.expand_dims(img, 0)

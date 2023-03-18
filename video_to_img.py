@@ -1,7 +1,7 @@
 import cv2
 import os
 
-video_path = 'dataset/videoplayback.mp4'
+video_path = 'dataset/videoplayback.mp4' # Testpath
 save_path = 'dataset/video1'
 frame_skip = 100
 cap = cv2.VideoCapture(video_path)

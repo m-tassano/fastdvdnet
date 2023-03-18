@@ -4,16 +4,18 @@ Denoise all the sequences existent in a given folder using FastDVDnet.
 
 @author: Matias Tassano <mtassano@parisdescartes.fr>
 """
+import numpy as np
 import os
 import argparse
 import time
 import cv2
 import torch
+from tqdm import tqdm
 import torch.nn as nn
 from models import FastDVDnet
 from fastdvdnet import denoise_seq_fastdvdnet
 from utils import batch_psnr, init_logger_test, \
-				variable_to_cv2_image, remove_dataparallel_wrapper, open_sequence, close_logger
+				variable_to_cv2_image, remove_dataparallel_wrapper, open_sequence, close_logger, open_image
 
 NUM_IN_FR_EXT = 5 # temporal size of patch
 MC_ALGO = 'DeepFlow' # motion estimation algorithm
@@ -62,13 +64,10 @@ def test_fastdvdnet(**args):
 			"batch_size":set the batch size depending on available gpu
 
 	"""
-	# Start time
-	start_time = time.time()
 
 	# If save_path does not exist, create it
 	if not os.path.exists(args['save_path']):
 		os.makedirs(args['save_path'])
-	logger = init_logger_test(args['save_path'])
 
 	# Sets data type according to CPU or GPU modes
 	if args['cuda']:
@@ -77,9 +76,11 @@ def test_fastdvdnet(**args):
 		device = torch.device('cpu')
 
 	# Create models
-	print('Loading models ...')
+	if args['debug']:
+		print('Loading models ...')
 	model_temp = FastDVDnet(num_input_frames=NUM_IN_FR_EXT)
-	print("Model created")
+	if args['debug']:
+		print("Model created")
 	# Load saved weights
 	state_temp_dict = torch.load(args['model_file'], map_location='cpu')
 	if args['cuda']:
@@ -89,51 +90,75 @@ def test_fastdvdnet(**args):
 		# CPU mode: remove the DataParallel wrapper
 		state_temp_dict = remove_dataparallel_wrapper(state_temp_dict)
 	model_temp.load_state_dict(state_temp_dict)
-	print("Loaded weights")
+	if args['debug']:
+		print("Loaded weights")
 	# Sets the model in evaluation mode (e.g. it removes BN)
 	model_temp.eval()
 
-	with torch.no_grad():
-		print("Process data")
-		# process data
-		seq, _, _ = open_sequence(args['test_path'],\
-									args['gray'],\
-									expand_if_needed=False,\
-									max_num_fr=args['max_num_fr_per_seq'])
-		seq = torch.from_numpy(seq).to(device)
-		seq_time = time.time()
-		print("Add noise")
-		# Add noise
-		noise = torch.empty_like(seq).normal_(mean=0, std=args['noise_sigma']).to(device)
-		seqn = seq + noise
-		noisestd = torch.FloatTensor([args['noise_sigma']]).to(device)
-		print("Denoising")
-		denframes = denoise_seq_fastdvdnet(seq=seqn,\
-										noise_std=noisestd,\
-										temp_psz=NUM_IN_FR_EXT,\
-										model_temporal=model_temp)
-	
-	print("Computing PSNR")
-	# Compute PSNR and log it
-	stop_time = time.time()
-	psnr = batch_psnr(denframes, seq, 1.)
-	psnr_noisy = batch_psnr(seqn.squeeze(), seq, 1.)
-	loadtime = (seq_time - start_time)
-	runtime = (stop_time - seq_time)
-	seq_length = seq.size()[0]
-	logger.info("Finished denoising {}".format(args['test_path']))
-	logger.info("\tDenoised {} frames in {:.3f}s, loaded seq in {:.3f}s".\
-				 format(seq_length, runtime, loadtime))
-	logger.info("\tPSNR noisy {:.4f}dB, PSNR result {:.4f}dB".format(psnr_noisy, psnr))
+	frame_skip = args['frame_sampling']
+	cap = cv2.VideoCapture(args['test_path'])
+	frame_rate = cap.get(cv2.CAP_PROP_FPS)
+	frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+	duration = frame_count/ frame_rate
+	print("Frame count = ", frame_count)
+	print("Video Duration = ", duration)
+	print("Frame Rate = ", frame_rate)
+	count = 0
+	fr_cnt = 1
+	frames = []
+	# while cap.isOpened():
+	for count in tqdm(range(frame_count)):
+		ret, frame = cap.read()
+		
+		if not ret:
+			break
+		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+		frame = frame.transpose(2, 1, 0)
+		# count +=1
+		if not count % frame_skip == 0:
+			continue
 
-	# Save outputs
-	if not args['dont_save_results']:
-		# Save sequence
-		save_out_seq(seqn, denframes, args['save_path'], \
-					   int(args['noise_sigma']*255), args['suffix'], args['save_noisy'])
+		# Save the frame as an image
+		frames.append(frame)
+		fr_cnt+=1
+		# print("Frame: ", count, "/", frame_count, end = '\r')
+		if not fr_cnt % args['batch_size'] == 0:
+			continue
+		
+		with torch.no_grad():
+			if args['debug']:
+				print("Process data")
+			# process data
+			seq_list = []			
+			for frame in frames:
+				img, _ , _ = open_image(frame,\
+											gray_mode=args['gray'],\
+											expand_if_needed=False,\
+											expand_axis0=False)
+				seq_list.append(img)
+			seq = np.stack(seq_list, axis=0)
+			seq = torch.from_numpy(seq).to(device)
+			if args['debug']:
+				print("Add noise")
+			# Add noise
+			noise = torch.empty_like(seq).normal_(mean=0, std=args['noise_sigma']).to(device)
+			seqn = seq + noise
+			noisestd = torch.FloatTensor([args['noise_sigma']]).to(device)
+			if args['debug']:
+				print("Denoising")
+			denframes = denoise_seq_fastdvdnet(seq=seqn,\
+											noise_std=noisestd,\
+											temp_psz=NUM_IN_FR_EXT,\
+											model_temporal=model_temp)
+		frames = []
 
-	# close logger
-	close_logger(logger)
+		# Save outputs
+		if not args['dont_save_results']:
+			# Save sequence
+			save_out_seq(seqn, denframes, args['save_path'], \
+						int(args['noise_sigma']*255), args['suffix'], args['save_noisy'])
+	cap.release()
+	cv2.destroyAllWindows()
 
 if __name__ == "__main__":
 	# Parse arguments
@@ -141,21 +166,24 @@ if __name__ == "__main__":
 	parser.add_argument("--model_file", type=str,\
 						default="./model.pth", \
 						help='path to model of the pretrained denoiser')
-	parser.add_argument("--test_path", type=str, default="dataset/video1", \
+	parser.add_argument("--test_path", type=str, default="dataset/videoplayback.mp4", \
 						help='path to sequence to denoise')
 	parser.add_argument("--suffix", type=str, default="", help='suffix to add to output name')
-	parser.add_argument("--max_num_fr_per_seq", type=int, default=10, \
+	parser.add_argument("--max_num_fr_per_seq", type=int, default=4, \
 						help='max number of frames to load per sequence')
 	parser.add_argument("--noise_sigma", type=float, default=30, help='noise level used on test set')
 	parser.add_argument("--dont_save_results", action='store_true', help="don't save output images")
 	parser.add_argument("--save_noisy", action='store_true', help="save noisy frames")
 	parser.add_argument("--no_gpu", action='store_true', help="run model on CPU")
+
 	parser.add_argument("--save_path", type=str, default='./results', \
 						 help='where to save outputs as png')
 	parser.add_argument("--gray", action='store_true',\
 						help='perform denoising of grayscale images instead of RGB')
 	parser.add_argument("--video", action='store_true', help="Path is not a video")
-	parser.add_argument("--batch_size", type=float, default=90, help="set the batch size depending on available gpu")
+	parser.add_argument("--batch_size", type=float, default=4, help="set the batch size depending on available gpu")
+	parser.add_argument("--frame_sampling", type=float, default=10, help="1/frame_sampling of the frame samples will be taken")
+	parser.add_argument("--debug", action='store_true', help="Printing will occur")
 
 	argspar = parser.parse_args()
 	# Normalize noises ot [0, 1]
@@ -163,6 +191,7 @@ if __name__ == "__main__":
 
 	# use CUDA?
 	argspar.cuda = not argspar.no_gpu and torch.cuda.is_available()
+
 
 	print("\n### Testing FastDVDnet model ###")
 	print("> Parameters:")
