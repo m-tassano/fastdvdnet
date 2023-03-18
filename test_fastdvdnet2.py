@@ -5,7 +5,7 @@ Denoise all the sequences existent in a given folder using FastDVDnet.
 @author: Matias Tassano <mtassano@parisdescartes.fr>
 """
 import numpy as np
-import os
+import os, gc
 import argparse
 import time
 import cv2
@@ -94,7 +94,11 @@ def test_fastdvdnet(**args):
 		print("Loaded weights")
 	# Sets the model in evaluation mode (e.g. it removes BN)
 	model_temp.eval()
-
+	print(args['test_path'])
+	if not os.path.exists(args['test_path']):
+		print("Video does not exist")
+	else:
+		print("Found video")
 	frame_skip = args['frame_sampling']
 	cap = cv2.VideoCapture(args['test_path'])
 	frame_rate = cap.get(cv2.CAP_PROP_FPS)
@@ -104,7 +108,7 @@ def test_fastdvdnet(**args):
 	print("Video Duration = ", duration)
 	print("Frame Rate = ", frame_rate)
 	count = 0
-	fr_cnt = 1
+	fr_cnt = 0
 	frames = []
 	# while cap.isOpened():
 	for count in tqdm(range(frame_count)):
@@ -112,11 +116,13 @@ def test_fastdvdnet(**args):
 		
 		if not ret:
 			break
-		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-		frame = frame.transpose(2, 1, 0)
+		
 		# count +=1
 		if not count % frame_skip == 0:
 			continue
+
+		frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+		frame = frame.transpose(2, 1, 0)
 
 		# Save the frame as an image
 		frames.append(frame)
@@ -141,8 +147,9 @@ def test_fastdvdnet(**args):
 			if args['debug']:
 				print("Add noise")
 			# Add noise
-			noise = torch.empty_like(seq).normal_(mean=0, std=args['noise_sigma']).to(device)
-			seqn = seq + noise
+			# noise = torch.empty_like(seq).normal_(mean=0, std=args['noise_sigma']).to(device)
+			seqn = seq # seq + noise
+			print("Seqn length: ", len(seqn))
 			noisestd = torch.FloatTensor([args['noise_sigma']]).to(device)
 			if args['debug']:
 				print("Denoising")
@@ -150,13 +157,35 @@ def test_fastdvdnet(**args):
 											noise_std=noisestd,\
 											temp_psz=NUM_IN_FR_EXT,\
 											model_temporal=model_temp)
+			print("Denframe length: ", denframes.shape)
+			# print("Saving image")
+			for img in denframes:
+				print("img shape: ", img.shape)
+				print(f"{args['save_path']}/{fr_cnt}.jpg'")
+				cv2.imwrite(f"/home/akash/Documents/FastDVDNet/fastdvdnet/results/{fr_cnt}.jpg'", img.cpu().numpy())
+			del denframes
+		gc.collect()
+		torch.cuda.empty_cache()
 		frames = []
-
+	img = cv2.imread(f'results/1.jpg')
+	img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+	height, width, layers = img.shape
+	size = (width,height)
+	out = cv2.VideoWriter(f"{args['save_path']}/output.mp4",cv2.VideoWriter_fourcc(*'DIVX'), frame_rate/frame_skip, size)
+	for i in tqdm(1, range(fr_cnt)):
+        # writing to a image array
+		img = cv2.imread(f'results/{i}.jpg')
+		img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+		height, width, layers = img.shape
+		size = (width,height)
+		out.write(img[i])
+		out.release()
 		# Save outputs
-		if not args['dont_save_results']:
-			# Save sequence
-			save_out_seq(seqn, denframes, args['save_path'], \
-						int(args['noise_sigma']*255), args['suffix'], args['save_noisy'])
+		# if not args['dont_save_results']:
+		# 	# Save sequence
+		# 	save_out_seq(seqn, denframes, args['save_path'], \
+		# 				int(args['noise_sigma']*255), args['suffix'], args['save_noisy'])
+		
 	cap.release()
 	cv2.destroyAllWindows()
 
@@ -166,7 +195,7 @@ if __name__ == "__main__":
 	parser.add_argument("--model_file", type=str,\
 						default="./model.pth", \
 						help='path to model of the pretrained denoiser')
-	parser.add_argument("--test_path", type=str, default="dataset/videoplayback.mp4", \
+	parser.add_argument("--test_path", type=str, default="data_set/videoplayback.mp4", \
 						help='path to sequence to denoise')
 	parser.add_argument("--suffix", type=str, default="", help='suffix to add to output name')
 	parser.add_argument("--max_num_fr_per_seq", type=int, default=4, \
@@ -182,7 +211,7 @@ if __name__ == "__main__":
 						help='perform denoising of grayscale images instead of RGB')
 	parser.add_argument("--video", action='store_true', help="Path is not a video")
 	parser.add_argument("--batch_size", type=float, default=4, help="set the batch size depending on available gpu")
-	parser.add_argument("--frame_sampling", type=float, default=10, help="1/frame_sampling of the frame samples will be taken")
+	parser.add_argument("--frame_sampling", type=float, default=30, help="1/frame_sampling of the frame samples will be taken")
 	parser.add_argument("--debug", action='store_true', help="Printing will occur")
 
 	argspar = parser.parse_args()
