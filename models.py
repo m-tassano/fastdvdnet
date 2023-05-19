@@ -35,7 +35,7 @@ class InputCvBlock(nn.Module):
 		super(InputCvBlock, self).__init__()
 		self.interm_ch = 30
 		self.convblock = nn.Sequential(
-			nn.Conv2d(num_in_frames*(3+1), num_in_frames*self.interm_ch, \
+			nn.Conv2d(num_in_frames*(1+1), num_in_frames*self.interm_ch, \
 					  kernel_size=3, padding=1, groups=num_in_frames, bias=False),
 			nn.BatchNorm2d(num_in_frames*self.interm_ch),
 			nn.ReLU(inplace=True),
@@ -133,7 +133,7 @@ class DenBlock(nn.Module):
 		x2 = self.downc1(x1)
 		# Upsampling
 		x2 = self.upc2(x2)
-		x1 = self.upc1(x1+x2)
+		x1 = self.upc1(x2)
 		# Estimation
 		x = self.outc(x0+x1)
 
