@@ -1,8 +1,6 @@
 #!/bin/sh
 """
 Denoise all the sequences existent in a given folder using FastDVDnet.
-
-@author: Matias Tassano <mtassano@parisdescartes.fr>
 """
 import os
 import argparse
